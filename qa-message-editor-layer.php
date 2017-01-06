@@ -2,8 +2,6 @@
 
 class qa_html_theme_layer extends qa_html_theme_base
 {
-    const MEDIUM_EDITOR_DIR = './qa-plugin/q2a-medium-editor/';
-    
     function head_script()
     {
         qa_html_theme_base::head_script();

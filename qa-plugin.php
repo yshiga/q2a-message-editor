@@ -18,6 +18,12 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 	exit;
 }
 
+//Define global constants
+@define( 'MESSAGE_EDITOR_DIR', dirname( __FILE__ ) );
+@define( 'MESSAGE_EDITOR_FOLDER', basename( dirname( __FILE__ ) ) );
+@define( 'MESSAGE_EDITOR_RELATIVE_PATH', '../qa-plugin/'.MESSAGE_EDITOR_FOLDER.'/');
+@define( 'MEDIUM_EDITOR_DIR', '../qa-plugin/q2a-medium-editor/');
+
 // layer
 qa_register_plugin_layer('qa-message-editor-layer.php','Message Editor Layer');
 // override

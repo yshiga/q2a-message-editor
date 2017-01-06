@@ -8,7 +8,7 @@ function qa_page_routing()
 {
     $routing = qa_page_routing_base();
     
-    $routing['message/'] = QA_HTML_THEME_LAYER_URLTOROOT.'/message.php';
+    $routing['message/'] = MESSAGE_EDITOR_RELATIVE_PATH.'message.php';
     
     return $routing;
 }
