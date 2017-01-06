@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+/* form height of message */
+.qa-part-form-message .editable {
+  min-height: 200px;
+}
