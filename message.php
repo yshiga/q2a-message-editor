@@ -79,7 +79,9 @@
     if (qa_post_text('domessage')) {
         
         qa_get_post_content('editor', 'content', $in['editor'], $in['content'], $in['format'], $in['text']);
-        $inmessage = $in[ 'content' ];
+        
+        $inmessage = strip_spaces($in['content']);
+        
         if (isset($pageerror)) {
             // not permitted to post, so quit here
             $qa_content['error'] = $pageerror;
@@ -216,6 +218,22 @@
     return $qa_content;
 
 
+    function strip_spaces($content)
+    {
+        
+        $pat = '/<p class=""><br><\/p>/i';
+        $pat2 = '/<p class="">(&nbsp;\s?)*<\/p>/i';
+
+        $result = preg_replace($pat, "", $content);
+        $result2 = preg_replace($pat2, "", $result);
+        
+        if (empty($result2)) {
+            $return_content = "";
+        } else {
+            $return_content = $content;
+        }
+        return $return_content;
+    }
 /*
     Omit PHP closing tag to help avoid accidental output
 */
