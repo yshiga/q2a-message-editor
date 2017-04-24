@@ -10,7 +10,7 @@ class qa_html_theme_layer extends qa_html_theme_base
           $this->output_js();
         }
     }
-    
+
     private function output_css()
     {
         $components = MEDIUM_EDITOR_DIR . 'bower_components/';
@@ -29,7 +29,7 @@ class qa_html_theme_layer extends qa_html_theme_base
             $this->output('<link rel="stylesheet" type="text/css" href="'.MEDIUM_EDITOR_DIR.'css/dialog-polyfill.css" />');
         }
     }
-    
+
     private function output_js()
     {
         $components = MEDIUM_EDITOR_DIR . 'bower_components/';
@@ -54,37 +54,12 @@ class qa_html_theme_layer extends qa_html_theme_base
             $this->output('<script src="'. MEDIUM_EDITOR_DIR . 'js/dialog-polyfill.js' . '"></script>');
         }
     }
-    
+
     public function message_content($message)
     {
         if (!empty($message['content'])) {
             $message['content'] = $this->embed_replace($message['content']);
         }
         qa_html_theme_base::message_content($message);
-    }
-    
-    function embed_replace($text)
-    {
-        $types = array(
-            'youtube' => array(
-                array(
-                    'https{0,1}:\/\/w{0,3}\.*youtube\.com\/watch\?\S*v=([A-Za-z0-9_-]+)[^< ]*',
-                    '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>'
-                ),
-                array(
-                    'https{0,1}:\/\/w{0,3}\.*youtu\.be\/([A-Za-z0-9_-]+)[^< ]*',
-                    '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>'
-                ),
-            ),
-        );
-
-        foreach($types as $t => $ra) {
-            foreach($ra as $r) {
-                $text = preg_replace('/<a[^>]+>'.$r[0].'<\/a>/i',$r[1],$text);
-                $text = preg_replace('/(?<![\'"=])'.$r[0].'/i',$r[1],$text);
-            }
-        }
-        $text = preg_replace('/class="plain_url"/i','class="video video-youtube"',$text);
-        return $text;
     }
 }
