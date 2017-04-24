@@ -24,7 +24,5 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 @define( 'MESSAGE_EDITOR_RELATIVE_PATH', '../qa-plugin/'.MESSAGE_EDITOR_FOLDER.'/');
 @define( 'MEDIUM_EDITOR_DIR', '../qa-plugin/q2a-medium-editor/');
 
-// layer
-qa_register_plugin_layer('qa-message-editor-layer.php','Message Editor Layer');
 // override
 qa_register_plugin_overrides('qa-message-editor-overrides.php');
