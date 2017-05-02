@@ -138,7 +138,8 @@
 
 //    Prepare content for theme
 
-    $hideForm = !empty($pageerror) || $messagesent;
+    // $hideForm = !empty($pageerror) || $messagesent;
+    $hideForm = !empty($pageerror);
 
     $qa_content['title'] = qa_lang_html('misc/private_message_title');
 
