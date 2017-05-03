@@ -200,8 +200,10 @@
         $showmessages = array_slice(array_reverse($recent, true), 0, QA_DB_RETRIEVE_MESSAGES);
 
         if (count($showmessages)) {
+            $handle = $toaccount['handle'];
+            $handlelink = '<a href="'.qa_path_html('user/'.$handle).'">'.qa_html($handle).'</a>';
             $qa_content['message_list'] = array(
-                'title' => qa_lang_html_sub('misc/message_recent_history', qa_html($toaccount['handle'])),
+                'title' => qa_lang_html_sub('misc/message_recent_history', $handlelink),
             );
 
             $options = qa_message_html_defaults();
