@@ -16,7 +16,6 @@
 
     $qa_content = qa_content_prepare();
 
-
 //    Check we have a handle, we're not using Q2A's single-sign on integration and that we're logged in
 
     if (QA_FINAL_EXTERNAL_USERS)
@@ -138,6 +137,10 @@
 
 //    Prepare content for theme
 
+
+    $start = qa_get_start();
+    $pagesize = QA_DB_RETRIEVE_MESSAGES;
+    
     // $hideForm = !empty($pageerror) || $messagesent;
     $hideForm = !empty($pageerror);
 
@@ -195,9 +198,11 @@
     if (qa_opt('show_message_history')) {
         $recent = array_merge($torecent, $fromrecent);
 
+        $messagescount = count($recent);
+
         qa_sort_by($recent, 'created');
 
-        $showmessages = array_slice(array_reverse($recent, true), 0, QA_DB_RETRIEVE_MESSAGES);
+        $showmessages = array_slice(array_reverse($recent, true), $start, QA_DB_RETRIEVE_MESSAGES);
 
         if (count($showmessages)) {
             $handle = $toaccount['handle'];
@@ -213,6 +218,8 @@
         }
 
         $qa_content['navigation']['sub'] = qa_messages_sub_navigation();
+
+        $qa_content['page_links'] = qa_html_page_links(qa_request(), $start, $pagesize, $messagescount, qa_opt('pages_prev_next'));
     }
 
 
