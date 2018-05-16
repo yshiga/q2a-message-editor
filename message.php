@@ -48,8 +48,7 @@
 
 //    Check the user exists and work out what can and can't be set (if not using single sign-on)
 
-    if ( !qa_opt('allow_private_messages') || !is_array($toaccount)
-    || (($toaccount['flags'] & QA_USER_FLAGS_NO_MESSAGES) && !message_editor_util::follow_each_other($loginuserid, $toaccount['userid'])) ) {
+    if ( !message_editor_util::allow_message($loginuserid, $toaccount)) {
         return include QA_INCLUDE_DIR.'qa-page-not-found.php';
     }
 
