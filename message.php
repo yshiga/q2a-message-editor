@@ -9,6 +9,7 @@
     require_once QA_INCLUDE_DIR.'app/users.php';
     require_once QA_INCLUDE_DIR.'app/format.php';
     require_once QA_INCLUDE_DIR.'app/limits.php';
+    require_once MESSAGE_EDITOR_DIR.'/message-editor-util.php';
 
     $handle = qa_request_part(1);
     $loginuserid = qa_get_logged_in_userid();
@@ -47,8 +48,9 @@
 
 //    Check the user exists and work out what can and can't be set (if not using single sign-on)
 
-    if ( !qa_opt('allow_private_messages') || !is_array($toaccount) || ($toaccount['flags'] & QA_USER_FLAGS_NO_MESSAGES) )
+    if ( !message_editor_util::allow_message($loginuserid, $toaccount)) {
         return include QA_INCLUDE_DIR.'qa-page-not-found.php';
+    }
 
 
 //    Check that we have permission and haven't reached the limit, but don't quit just yet
