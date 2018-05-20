@@ -32,8 +32,8 @@ class message_editor_util {
             return true;
         }
         if ( !qa_opt('allow_private_messages') || !is_array($toaccount)
-          || ((!($toaccount['flags'] & QA_USER_FLAGS_NO_MESSAGES)
-          || !(qa_get_logged_in_flags() & QA_USER_FLAGS_NO_MESSAGES))
+          || ((!($toaccount['flags'] & !QA_USER_FLAGS_NO_MESSAGES)
+          || !(qa_get_logged_in_flags() & !QA_USER_FLAGS_NO_MESSAGES))
           && !self::follow_each_other($loginuserid, $toaccount['userid'])) ) {
             return false;
         } else {
