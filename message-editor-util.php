@@ -52,5 +52,28 @@ class message_editor_util {
 
         return false;
     }
-}
 
+    public static function qa_db_recent_messages_selectspec($fromidentifier, $fromisuserid, $toidentifier, $toisuserid)
+    {
+        if (isset($fromidentifier)) {
+            $fromsub = $fromisuserid ? '$' : '(SELECT userid FROM ^users WHERE handle=$ LIMIT 1)';
+            $where = 'fromuserid=' . $fromsub . " AND type='PRIVATE'";
+        }
+        else
+            $where = "type='PUBLIC'";
+        $tosub = $toisuserid ? '$' : '(SELECT userid FROM ^users WHERE handle=$ LIMIT 1)';
+
+        $source = '^messages LEFT JOIN ^users ufrom ON fromuserid=ufrom.userid LEFT JOIN ^users uto ON touserid=uto.userid WHERE ' . $where . ' AND touserid=' . $tosub . ' ORDER BY ^messages.created DESC';
+
+        $arguments = isset($fromidentifier) ? array($fromidentifier, $toidentifier) : array($toidentifier);
+
+        return array(
+            'columns' => qa_db_messages_columns(),
+            'source' => $source,
+            'arguments' => $arguments,
+            'arraykey' => 'messageid',
+            'sortdesc' => 'created',
+        );
+    }
+
+}
