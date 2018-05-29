@@ -41,8 +41,8 @@
 
     list($toaccount, $torecent, $fromrecent) = qa_db_select_with_pending(
         qa_db_user_account_selectspec($handle, false),
-        qa_db_recent_messages_selectspec($loginuserid, true, $handle, false),
-        qa_db_recent_messages_selectspec($handle, false, $loginuserid, true)
+        message_editor_util::qa_db_recent_messages_selectspec($loginuserid, true, $handle, false),
+        message_editor_util::qa_db_recent_messages_selectspec($handle, false, $loginuserid, true)
     );
 
 
@@ -141,7 +141,7 @@
 
 
     $start = qa_get_start();
-    $pagesize = QA_DB_RETRIEVE_MESSAGES;
+    $pagesize = qa_opt('page_size_pms');
     
     // $hideForm = !empty($pageerror) || $messagesent;
     $hideForm = !empty($pageerror);
@@ -204,7 +204,7 @@
 
         qa_sort_by($recent, 'created');
 
-        $showmessages = array_slice(array_reverse($recent, true), $start, QA_DB_RETRIEVE_MESSAGES);
+        $showmessages = array_slice(array_reverse($recent, true), $start, $pagesize);
 
         if (count($showmessages)) {
             $handle = $toaccount['handle'];
