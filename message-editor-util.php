@@ -76,4 +76,18 @@ class message_editor_util {
         );
     }
 
+    public static function is_message_posted($fromuserid, $touserid)
+    {
+        $sql = "";
+        $sql = "SELECT COUNT(*)";
+        $sql.= " FROM ^messages";
+        $sql.= " WHERE type = 'PRIVATE'";
+        $sql.= " AND fromuserid = $";
+        $sql.= " AND touserid = $";
+
+        $count = qa_db_read_one_value(qa_db_query_sub($sql, $fromuserid, $touserid));
+
+        return ($count > 0);
+    }
+
 }
