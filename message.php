@@ -226,7 +226,11 @@
 
 
     $qa_content['raw']['account'] = $toaccount; // for plugin layers to access
-
+    if (!message_editor_util::is_message_posted($loginuserid, $toaccount['userid'])) {
+        $qa_content['no_post_html'] = qa_opt('message_editor_no_post_html');
+    } else {
+        $qa_content['no_post_html'] = '';
+    }
     return $qa_content;
 
 
