@@ -26,7 +26,7 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 
 // language file
 qa_register_plugin_phrases('qa-message-editor-lang-*.php', 'message_editor');
-// admin
-qa_register_plugin_module('module', 'qa-message-editor-admin.php', 'qa_message_editor_admin', 'Message Editor');
 // override
 qa_register_plugin_overrides('qa-message-editor-overrides.php');
+
+qa_register_plugin_layer('qa-message-editor-layer.php','message editor Layer');
