@@ -39,6 +39,7 @@
 
 //    Find the user profile and their recent private messages
 
+
     list($toaccount, $torecent, $fromrecent) = qa_db_select_with_pending(
         qa_db_user_account_selectspec($handle, false),
         message_editor_util::qa_db_recent_messages_selectspec($loginuserid, true, $handle, false),
@@ -48,9 +49,6 @@
 
 //    Check the user exists and work out what can and can't be set (if not using single sign-on)
 
-    if ( !message_editor_util::allow_message($loginuserid, $toaccount)) {
-        return include QA_INCLUDE_DIR.'qa-page-not-found.php';
-    }
 
 
 //    Check that we have permission and haven't reached the limit, but don't quit just yet
@@ -181,6 +179,7 @@
         ),
     );
 
+
     $qa_content['focusid'] = 'message';
 
     if ($hideForm) {
@@ -199,19 +198,34 @@
 
     if (qa_opt('show_message_history')) {
         $recent = array_merge($torecent, $fromrecent);
-
         $messagescount = count($recent);
 
         qa_sort_by($recent, 'created');
 
         $showmessages = array_slice(array_reverse($recent, true), $start, $pagesize);
 
+        $handlelink = '<a href="'.qa_path_html('user/'.$handle).'">'.qa_html($handle).'</a>';
+
+        $title = qa_lang_html_sub('misc/message_recent_history', $handlelink);
+
+        // メッセージ0でかつフォロー&フォロワーでなければ送信しない。
+        if ($messagescount == 0  && !message_editor_util::allow_message($loginuserid, $toaccount)) {
+    //        return include QA_INCLUDE_DIR.'qa-page-not-found.php';
+            unset($qa_content['form_message']);
+            $qa_content['no_follow'] = true;
+            $title = $handlelink . 'さんにメッセージを送るには相互フォローが必要です。';
+        }
+
+        if(!$toaccount){
+            $title = 'ユーザーが存在しません';
+        }
+
+        $qa_content['message_list'] = array(
+            'title' => $title,
+        );
+
         if (count($showmessages)) {
             $handle = $toaccount['handle'];
-            $handlelink = '<a href="'.qa_path_html('user/'.$handle).'">'.qa_html($handle).'</a>';
-            $qa_content['message_list'] = array(
-                'title' => qa_lang_html_sub('misc/message_recent_history', $handlelink),
-            );
 
             $options = qa_message_html_defaults();
 
@@ -224,13 +238,6 @@
         $qa_content['page_links'] = qa_html_page_links(qa_request(), $start, $pagesize, $messagescount, qa_opt('pages_prev_next'));
     }
 
-
-    $qa_content['raw']['account'] = $toaccount; // for plugin layers to access
-    if (!message_editor_util::is_message_posted($loginuserid, $toaccount['userid'])) {
-        $qa_content['no_post_html'] = qa_opt('message_editor_no_post_html');
-    } else {
-        $qa_content['no_post_html'] = '';
-    }
     return $qa_content;
 
 
